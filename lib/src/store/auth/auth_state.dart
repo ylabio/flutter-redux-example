@@ -32,11 +32,11 @@ class AuthState {
     AppBaseError error,
   }) {
     return AuthState(
-      user: user ?? this.user,
+      user: user,
       token: token ?? this.token,
       hasToken: hasToken ?? this.hasToken,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      error: error,
     );
   }
 

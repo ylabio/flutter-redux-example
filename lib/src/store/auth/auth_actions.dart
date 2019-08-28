@@ -17,7 +17,12 @@ abstract class AuthAction {
 
 class AuthLoading extends AuthAction {}
 
-class AuthLoaded extends AuthAction {}
+class AuthUpdate extends AuthAction {
+  final String token;
+  final User user;
+
+  AuthUpdate({this.token, this.user});
+}
 
 class AuthLoggedIn extends AuthAction {
   final String token;
@@ -28,12 +33,6 @@ class AuthLoggedIn extends AuthAction {
 
 class AuthLoggedOut extends AuthAction {}
 
-class AuthSetUser extends AuthAction {
-  final User user;
-
-  AuthSetUser(this.user);
-}
-
 class AuthError extends AuthAction {
   final AppBaseError error;
 
@@ -42,17 +41,17 @@ class AuthError extends AuthAction {
 
 class AuthClearError extends AuthAction {}
 
-ThunkAction<AppState> remind(context) {
-  final authRepository = Provider.of<AuthRepository>(context);
+ThunkAction<AppState> remind(authRepository) {
   return (Store<AppState> store) async {
     store.dispatch(AuthLoading());
 
     if (authRepository.hasToken()) {
+      // TODO: get user profile
       store.dispatch(AuthLoggedIn(token: authRepository.getToken()));
       return;
     }
 
-    store.dispatch(AuthLoaded());
+    store.dispatch(AuthUpdate(token: ''));
   };
 }
 
@@ -81,7 +80,7 @@ ThunkAction<AppState> signout(context) {
   return (Store<AppState> store) async {
     store.dispatch(AuthLoading());
 
-    await authRepository.logout();
+    // await authRepository.logout();
     await authRepository.removeToken();
 
     store.dispatch(AuthLoggedOut());

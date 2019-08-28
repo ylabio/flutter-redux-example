@@ -11,6 +11,7 @@ import 'package:flutter_redux_example/src/repository/auth/auth_storage_provider.
 import 'package:flutter_redux_example/src/repository/auth/repository.dart';
 import 'package:flutter_redux_example/src/store/app_state.dart';
 import 'package:flutter_redux_example/src/store/app_reducer.dart';
+import 'package:flutter_redux_example/src/store/auth/store.dart';
 import 'package:flutter_redux_example/src/utils/app_logger.dart';
 import 'package:flutter_redux_example/src/utils/app_router.dart';
 import 'package:flutter_redux_example/src/utils/http.dart';
@@ -39,13 +40,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authRepository = AuthRepository(
+      AuthStorageProvider(prefs),
+      AuthApiProvider(),
+    );
+    store.dispatch(remind(authRepository));
+
     return StoreProvider<AppState>(
       store: store,
-      child: Provider<AuthRepository>(
-        builder: (context) => AuthRepository(
-          AuthStorageProvider(prefs),
-          AuthApiProvider(),
-        ),
+      child: Provider<AuthRepository>.value(
+        value: authRepository,
         child: MaterialApp(
           title: 'Flutter Redux Example',
           theme: ThemeData(),

@@ -8,16 +8,14 @@ import 'package:flutter_redux_example/src/store/auth/store.dart';
 class LoginFormViewModel {
   final AuthState authState;
   final Function onLogin;
-  final Function onRemind;
 
-  LoginFormViewModel({this.authState, this.onLogin, this.onRemind});
+  LoginFormViewModel({this.authState, this.onLogin});
 
   static LoginFormViewModel fromStore(Store<AppState> store) {
     return LoginFormViewModel(
       authState: store.state.authState,
       onLogin: (context, login, password) =>
           store.dispatch(signin(context, login, password)),
-      onRemind: (context) => store.dispatch(remind(context)),
     );
   }
 }
@@ -34,12 +32,6 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  @override
-  void didChangeDependencies() {
-    widget.viewModel.onRemind(context);
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +59,7 @@ class _LoginFormState extends State<LoginForm> {
               textAlign: TextAlign.center,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) {
-                if (_authState is! AuthLoading) {
+                if (!_authState.isLoading) {
                   _onLoginPressed();
                 }
               },
@@ -82,9 +74,9 @@ class _LoginFormState extends State<LoginForm> {
               controller: _passwordController,
               keyboardType: TextInputType.text,
               textAlign: TextAlign.center,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
               onFieldSubmitted: (value) {
-                if (_authState is! AuthLoading) {
+                if (!_authState.isLoading) {
                   _onLoginPressed();
                 }
               },
@@ -98,7 +90,7 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(
               width: double.infinity,
               child: RaisedButton(
-                onPressed: _authState is! AuthLoading ? _onLoginPressed : null,
+                onPressed: !_authState.isLoading ? _onLoginPressed : null,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
@@ -109,8 +101,9 @@ class _LoginFormState extends State<LoginForm> {
                     borderRadius: BorderRadius.circular(4)),
               ),
             ),
+            SizedBox(height: 15),
             Text(
-              _authState.error?.description ?? '',
+              _authState.error != null ? _authState.error.description : '',
               style: TextStyle(color: Colors.red),
             ),
             Container(

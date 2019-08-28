@@ -56,7 +56,7 @@ class Http {
 
   InterceptorsWrapper _authInterceptor() {
     return InterceptorsWrapper(onRequest: (options) {
-      if (token.isEmpty) {
+      if ((token ?? '').isEmpty) {
         return options;
       }
       options.headers['Authorization'] = 'Bearer $token';
