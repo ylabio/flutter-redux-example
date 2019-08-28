@@ -23,12 +23,12 @@ class AuthApiProvider extends BaseApiProvider {
         UrlProvider.sign,
         data: {'login': login, 'password': password},
       );
-      return AuthResponse.fromJson(response.data);
-    } on DioError catch (error, stacktrace) {
-      if (error.response.statusCode == 401) {
+      return AuthResponse.fromJson(response.data['data']);
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
         return AuthResponse.withError(AuthError.loginFailed);
       }
-      return AuthResponse.withError(errorHandler(error, stacktrace));
+      return AuthResponse.withError(errorHandler(e));
     }
   }
 
@@ -37,9 +37,9 @@ class AuthApiProvider extends BaseApiProvider {
       final response = await dio.delete(
         UrlProvider.sign,
       );
-      return AuthResponse.fromJson(response.data);
-    } on DioError catch (error, stacktrace) {
-      return AuthResponse.withError(errorHandler(error, stacktrace));
+      return AuthResponse.fromJson(response.data['data']);
+    } on DioError catch (e) {
+      return AuthResponse.withError(errorHandler(e));
     }
   }
 }

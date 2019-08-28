@@ -5,6 +5,11 @@ class User {
   const User(this.id, this.name);
 
   User.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        name = json['name'];
+      : id = json['_id'],
+        name = json['name'] ?? '';
+
+  @override
+  String toString() {
+    return 'User: {id: $id, name: $name}';
+  }
 }

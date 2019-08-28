@@ -10,7 +10,9 @@ class AuthRepository {
 
   AuthRepository(this._storageProvider, this._apiProvider);
 
-  Future<AuthResponse> authenticate({
+  AuthApiProvider get apiProvider => _apiProvider;
+
+  Future<AuthResponse> login({
     @required String login,
     @required String password,
   }) async {

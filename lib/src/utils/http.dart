@@ -17,15 +17,16 @@ class Http {
 
   Http._internal();
 
-  Http.init(Store store) : assert(store != null) {
-    token = store.state.auth.token;
+  void init(Store store) {
+    assert(store != null);
+    token = store.state.authState.token;
 
     dio = Dio(_options);
     dio.interceptors.add(_authInterceptor());
     dio.interceptors.add(logger);
 
     store.onChange.listen((state) {
-      final nextToken = store.state.auth.token;
+      final nextToken = store.state.authState.token;
       if (nextToken != token) {
         if (nextToken == null) {
           token = '';

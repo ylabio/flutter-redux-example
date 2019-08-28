@@ -9,7 +9,7 @@ class AuthResponse {
   AuthResponse(this.token, this.user, this.error);
 
   AuthResponse.fromJson(Map<String, dynamic> json)
-      : token = json['access_token'],
+      : token = json['token'],
         user = User.fromJson(json['user']),
         error = null;
 
