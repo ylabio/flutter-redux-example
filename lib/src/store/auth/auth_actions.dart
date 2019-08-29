@@ -5,7 +5,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 
 import 'package:flutter_redux_example/src/models/user_model.dart';
 import 'package:flutter_redux_example/src/repository/auth/repository.dart';
-import 'package:flutter_redux_example/src/store/app_state.dart';
+import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/utils/app_errors.dart';
 
 abstract class AuthAction {
@@ -20,8 +20,9 @@ class AuthLoading extends AuthAction {}
 class AuthUpdate extends AuthAction {
   final String token;
   final User user;
+  final isLoading;
 
-  AuthUpdate({this.token, this.user});
+  AuthUpdate({this.token, this.user, this.isLoading});
 }
 
 class AuthLoggedIn extends AuthAction {
@@ -46,12 +47,17 @@ ThunkAction<AppState> remind(authRepository) {
     store.dispatch(AuthLoading());
 
     if (authRepository.hasToken()) {
-      // TODO: get user profile
-      store.dispatch(AuthLoggedIn(token: authRepository.getToken()));
-      return;
+      final token = authRepository.getToken();
+      store.dispatch(AuthUpdate(token: token, isLoading: true));
+      // check if the token is expired
+      final authResponse = await authRepository.profile();
+      if (authResponse.error == null) {
+        store.dispatch(AuthLoggedIn(token: token, user: authResponse.user));
+        return;
+      }
     }
 
-    store.dispatch(AuthUpdate(token: ''));
+    store.dispatch(AuthLoggedOut());
   };
 }
 

@@ -42,4 +42,15 @@ class AuthApiProvider extends BaseApiProvider {
       return AuthResponse.withError(errorHandler(e));
     }
   }
+
+  Future<AuthResponse> profile() async {
+    try {
+      final response = await dio.get(
+        UrlProvider.profile,
+      );
+      return AuthResponse.fromJson(response.data['data']);
+    } on DioError catch (e) {
+      return AuthResponse.withError(errorHandler(e));
+    }
+  }
 }

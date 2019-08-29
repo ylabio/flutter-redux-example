@@ -22,7 +22,7 @@ AuthState _update(AuthState authState, AuthUpdate action) {
     user: action.user ?? authState.user,
     token: token,
     hasToken: token.isNotEmpty,
-    isLoading: false,
+    isLoading: action.isLoading ?? authState.isLoading,
   );
 }
 

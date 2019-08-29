@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
 
-import 'package:flutter_redux_example/src/store/app_state.dart';
+import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/store/auth/store.dart';
 
 class LoginFormViewModel {

@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_redux_example/src/repository/auth/auth_api_provider.dart';
 import 'package:flutter_redux_example/src/repository/auth/auth_storage_provider.dart';
 import 'package:flutter_redux_example/src/repository/auth/repository.dart';
-import 'package:flutter_redux_example/src/store/app_state.dart';
-import 'package:flutter_redux_example/src/store/app_reducer.dart';
+import 'package:flutter_redux_example/src/store/app/app_state.dart';
+import 'package:flutter_redux_example/src/store/app/app_reducer.dart';
 import 'package:flutter_redux_example/src/store/auth/store.dart';
 import 'package:flutter_redux_example/src/utils/app_logger.dart';
 import 'package:flutter_redux_example/src/utils/app_router.dart';
@@ -44,6 +44,8 @@ class App extends StatelessWidget {
       AuthStorageProvider(prefs),
       AuthApiProvider(),
     );
+
+    // remind user session
     store.dispatch(remind(authRepository));
 
     return StoreProvider<AppState>(

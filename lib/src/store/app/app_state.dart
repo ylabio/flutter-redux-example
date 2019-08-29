@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-import 'auth/auth_state.dart';
+import 'package:flutter_redux_example/src/store/auth/auth_state.dart';
 
 @immutable
 class AppState {

@@ -23,6 +23,10 @@ class AuthRepository {
     return await _apiProvider.logout();
   }
 
+  Future<AuthResponse> profile() async {
+    return await _apiProvider.profile();
+  }
+
   String getToken() {
     return _storageProvider.getToken();
   }
