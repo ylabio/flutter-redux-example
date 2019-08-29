@@ -10,6 +10,7 @@ class AuthApiProvider extends BaseApiProvider {
   Future<AuthResponse> login({
     @required String login,
     @required String password,
+    String fields,
   }) async {
     if (login == null || login.trim().isEmpty) {
       return AuthResponse.withError(ValidationError.loginEmpty);
@@ -22,6 +23,7 @@ class AuthApiProvider extends BaseApiProvider {
       final response = await dio.post(
         UrlProvider.sign,
         data: {'login': login, 'password': password},
+        queryParameters: {'fields': fields},
       );
       return AuthResponse.fromJson(response.data['data']);
     } on DioError catch (e) {
@@ -43,10 +45,11 @@ class AuthApiProvider extends BaseApiProvider {
     }
   }
 
-  Future<AuthResponse> profile() async {
+  Future<AuthResponse> profile({String fields}) async {
     try {
       final response = await dio.get(
         UrlProvider.profile,
+        queryParameters: {'fields': fields},
       );
       return AuthResponse.fromJson(response.data['data']);
     } on DioError catch (e) {

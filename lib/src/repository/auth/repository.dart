@@ -15,16 +15,18 @@ class AuthRepository {
   Future<AuthResponse> login({
     @required String login,
     @required String password,
+    String fields = '_id',
   }) async {
-    return await _apiProvider.login(login: login, password: password);
+    return await _apiProvider.login(
+        login: login, password: password, fields: fields);
   }
 
   Future<AuthResponse> logout() async {
     return await _apiProvider.logout();
   }
 
-  Future<AuthResponse> profile() async {
-    return await _apiProvider.profile();
+  Future<AuthResponse> profile({String fields = '_id'}) async {
+    return await _apiProvider.profile(fields: fields);
   }
 
   String getToken() {

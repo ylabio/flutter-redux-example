@@ -9,15 +9,15 @@ class UrlProvider {
     return '$base/users/self';
   }
 
-  static String get items {
-    return '$base/items';
+  static String get ticketList {
+    return '$base/tickets';
   }
 
-  static String item(String id) {
-    return '$base/items/$id';
+  static String ticket(String id) {
+    return '$base/tickets/$id';
   }
 
-  static String bookmarkItem(String id) {
-    return '$base/items/$id/bookmark';
+  static String ticketBookmark(String id) {
+    return '$base/tickets/$id/bookmark';
   }
 }
