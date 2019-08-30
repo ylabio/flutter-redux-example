@@ -5,21 +5,6 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/store/auth/store.dart';
 
-class LoginFormViewModel {
-  final AuthState authState;
-  final Function onLogin;
-
-  LoginFormViewModel({this.authState, this.onLogin});
-
-  static LoginFormViewModel fromStore(Store<AppState> store) {
-    return LoginFormViewModel(
-      authState: store.state.authState,
-      onLogin: (context, login, password) =>
-          store.dispatch(signin(context, login, password)),
-    );
-  }
-}
-
 class LoginForm extends StatefulWidget {
   final LoginFormViewModel viewModel;
 
@@ -119,5 +104,20 @@ class _LoginFormState extends State<LoginForm> {
   void _onLoginPressed() {
     widget.viewModel
         .onLogin(context, _usernameController.text, _passwordController.text);
+  }
+}
+
+class LoginFormViewModel {
+  final AuthState authState;
+  final Function onLogin;
+
+  LoginFormViewModel({this.authState, this.onLogin});
+
+  static LoginFormViewModel fromStore(Store<AppState> store) {
+    return LoginFormViewModel(
+      authState: store.state.authState,
+      onLogin: (context, login, password) =>
+          store.dispatch(signin(context, login, password)),
+    );
   }
 }
