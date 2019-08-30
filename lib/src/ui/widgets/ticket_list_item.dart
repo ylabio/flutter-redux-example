@@ -4,15 +4,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux_example/src/models/ticket_model.dart';
 
 abstract class TicketAction {
-  void onSelect(Ticket ticket);
-  void onBookmark(Ticket ticket);
+  void select(Ticket ticket);
+  void bookmark(Ticket ticket);
 }
 
 class TicketListItem extends StatelessWidget {
   final Ticket item;
+  final bool isActionLoading;
   final TicketAction listener;
 
-  TicketListItem({Key key, this.item, this.listener}) : super(key: key);
+  TicketListItem({Key key, this.item, this.isActionLoading, this.listener})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +25,14 @@ class TicketListItem extends StatelessWidget {
       trailing: IconButton(
         icon: Icon(Icons.bookmark),
         onPressed: () {
-          listener.onBookmark(item);
+          listener.bookmark(item);
         },
       ),
-      onTap: () {
-        listener.onSelect(item);
-      },
+      onTap: isActionLoading
+          ? null
+          : () {
+              listener.select(item);
+            },
     );
   }
 }

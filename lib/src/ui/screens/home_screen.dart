@@ -11,15 +11,18 @@ import 'package:flutter_redux_example/src/store/ticket/store.dart';
 import 'package:flutter_redux_example/src/utils/app_router.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: _appBar(context),
       body: StoreConnector<AppState, HomeScreenTicketViewModel>(
         onInit: (store) {
           store.dispatch(refetchTicketList(context));
         },
-        converter: (store) => HomeScreenTicketViewModel.fromStore(store),
+        converter: (store) =>
+            HomeScreenTicketViewModel.fromStore(context, store),
         builder: (context, viewModel) {
           if (viewModel.ticketState.isLoading) {
             return PageLoader();
@@ -35,17 +38,18 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _appBar() {
+  PreferredSizeWidget _appBar(context) {
     return AppBar(
       title: Text('Home'),
       actions: <Widget>[
         StoreConnector<AppState, HomeScreenAuthViewModel>(
-          converter: (store) => HomeScreenAuthViewModel.fromStore(store),
+          converter: (store) =>
+              HomeScreenAuthViewModel.fromStore(context, store),
           builder: (context, viewModel) {
             return IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
-                viewModel.logout(context);
+                viewModel.logout();
               },
             );
           },
@@ -54,13 +58,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _ticketList(context, viewModel) {
+  Widget _ticketList(context, HomeScreenTicketViewModel viewModel) {
     return TicketList(
       items: viewModel.ticketState.ticketList,
       hasNext: viewModel.ticketState.hasNext,
       isLoading: viewModel.ticketState.isLoading,
-      onFetch: () => viewModel.fetchList(context),
-      onReFetch: () => viewModel.refetchList(context),
+      isActionLoading: viewModel.ticketState.isActionLoading,
+      onFetch: () => viewModel.fetchList(),
+      onReFetch: () => viewModel.refetchList(),
       onSelect: (Ticket ticket) {
         Navigator.of(context).pushNamed(
           AppRouter.detailRoute,
@@ -68,7 +73,7 @@ class HomeScreen extends StatelessWidget {
         );
       },
       onBookmark: (Ticket ticket) {
-        viewModel.bookmark(context, ticket.id, !ticket.isBookmark);
+        viewModel.bookmark(ticket.id, !ticket.isBookmark);
       },
     );
   }
@@ -91,9 +96,9 @@ class HomeScreenAuthViewModel {
     this.logout,
   });
 
-  static HomeScreenAuthViewModel fromStore(Store<AppState> store) {
+  static HomeScreenAuthViewModel fromStore(context, Store<AppState> store) {
     return HomeScreenAuthViewModel(
-      logout: (context) => store.dispatch(signout(context)),
+      logout: () => store.dispatch(signout(context)),
     );
   }
 }
@@ -111,12 +116,12 @@ class HomeScreenTicketViewModel {
     this.bookmark,
   });
 
-  static HomeScreenTicketViewModel fromStore(Store<AppState> store) {
+  static HomeScreenTicketViewModel fromStore(context, Store<AppState> store) {
     return HomeScreenTicketViewModel(
       ticketState: store.state.ticketState,
-      fetchList: (context) => store.dispatch(fetchTicketList(context)),
-      refetchList: (context) => store.dispatch(refetchTicketList(context)),
-      bookmark: (context, id, isBookmark) => store
+      fetchList: () => store.dispatch(fetchTicketList(context)),
+      refetchList: () => store.dispatch(refetchTicketList(context)),
+      bookmark: (id, isBookmark) => store
           .dispatch(bookmarkTicket(context, id: id, isBookmark: isBookmark)),
     );
   }

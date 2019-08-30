@@ -18,7 +18,11 @@ abstract class TicketAction {
   }
 }
 
-class TicketListLoading extends TicketAction {}
+class TicketLoading extends TicketAction {}
+
+class TicketListLoading extends TicketLoading {}
+
+class TicketActionLoading extends TicketAction {}
 
 class TicketListLoaded extends TicketAction {
   final List<Ticket> ticketList;
@@ -29,15 +33,11 @@ class TicketListLoaded extends TicketAction {
   TicketListLoaded({this.ticketList, this.totalCount, this.offset, this.limit});
 }
 
-class TicketLoading extends TicketAction {}
-
 class TicketLoaded extends TicketAction {
   final Ticket ticket;
 
   TicketLoaded({this.ticket});
 }
-
-class TicketActionLoading extends TicketAction {}
 
 class TicketBookmark extends TicketAction {
   final String id;
@@ -110,7 +110,7 @@ ThunkAction<AppState> bookmarkTicket(context,
     {@required String id, @required bool isBookmark}) {
   final ticketRepository = Provider.of<TicketRepository>(context);
   return (Store<AppState> store) async {
-    store.dispatch(TicketLoading());
+    store.dispatch(TicketActionLoading());
 
     if (isBookmark) {
       await ticketRepository.bookmark(id: id);

@@ -13,6 +13,7 @@ Reducer<TicketState> ticketStateReducer = combineReducers<TicketState>([
   TypedReducer<TicketState, TicketClearError>(_clearError),
 ]);
 
+// TicketLoading and TicketListLoading
 TicketState _loading(TicketState ticketState, TicketLoading action) {
   return ticketState.copyWith(isLoading: true, error: null);
 }
