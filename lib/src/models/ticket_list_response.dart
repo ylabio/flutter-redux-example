@@ -9,7 +9,9 @@ class TicketListResponse {
   TicketListResponse(this.tickets, this.totalCount, this.error);
 
   TicketListResponse.fromJson(Map<String, dynamic> json)
-      : tickets = json['items'].map((item) => Ticket.fromJson(item)),
+      : tickets = List<Map<String, dynamic>>.from(json['items'])
+            .map((Map<String, dynamic> item) => Ticket.fromJson(item))
+            .toList(),
         totalCount = json['count'],
         error = null;
 

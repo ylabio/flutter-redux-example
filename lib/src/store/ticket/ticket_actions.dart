@@ -8,8 +8,8 @@ import 'package:flutter_redux_example/src/repository/ticket/repository.dart';
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/utils/app_errors.dart';
 
-const TICKET_LIST_FIELDS = '_id,title,imageUrl,isBookmark';
-const TICKET_FIELDS = '_id,title,content,imageUrl,isBookmark';
+const TICKET_LIST_FIELDS = 'items(_id,title,image(url),isBookmark),count';
+const TICKET_FIELDS = '_id,title,content,image(url),isBookmark';
 
 abstract class TicketAction {
   @override
@@ -65,8 +65,8 @@ ThunkAction<AppState> fetchTicketList(context,
         offset: offset, limit: limit, fields: fields);
 
     store.dispatch(TicketListLoaded(
-      ticketList: ticketListResponse.tickets,
-      totalCount: ticketListResponse.totalCount,
+      ticketList: ticketListResponse.tickets ?? [],
+      totalCount: ticketListResponse.totalCount ?? 0,
       offset: offset,
       limit: limit,
     ));
@@ -83,8 +83,8 @@ ThunkAction<AppState> refetchTicketList(context,
         offset: 0, limit: limit, fields: fields);
 
     store.dispatch(TicketListLoaded(
-      ticketList: ticketListResponse.tickets,
-      totalCount: ticketListResponse.totalCount,
+      ticketList: ticketListResponse.tickets ?? [],
+      totalCount: ticketListResponse.totalCount ?? 0,
       offset: 0,
       limit: limit,
     ));

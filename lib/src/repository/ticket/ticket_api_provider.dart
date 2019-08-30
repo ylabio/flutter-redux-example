@@ -17,7 +17,7 @@ class TicketApiProvider extends BaseApiProvider {
         UrlProvider.ticketList,
         queryParameters: {'fields': fields},
       );
-      return TicketListResponse.fromJson(response.data['data']);
+      return TicketListResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
       return TicketListResponse.withError(errorHandler(e));
     }
@@ -32,7 +32,7 @@ class TicketApiProvider extends BaseApiProvider {
         UrlProvider.ticket(id),
         queryParameters: {'fields': fields},
       );
-      return TicketResponse.fromJson(response.data['data']);
+      return TicketResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
       return TicketResponse.withError(errorHandler(e));
     }
@@ -47,7 +47,7 @@ class TicketApiProvider extends BaseApiProvider {
         UrlProvider.ticketBookmark(id),
         queryParameters: {'fields': fields},
       );
-      return TicketResponse.fromJson(response.data['data']);
+      return TicketResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
       return TicketResponse.withError(errorHandler(e));
     }
@@ -58,7 +58,7 @@ class TicketApiProvider extends BaseApiProvider {
       final response = await dio.delete(
         UrlProvider.ticketBookmark(id),
       );
-      return TicketResponse.fromJson(response.data['data']);
+      return TicketResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
       return TicketResponse.withError(errorHandler(e));
     }

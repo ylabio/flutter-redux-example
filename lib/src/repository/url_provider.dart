@@ -1,5 +1,5 @@
 class UrlProvider {
-  static const String base = 'https://example.com/api/v1';
+  static const String base = 'http://localhost:8160/api/v1';
 
   static String get sign {
     return '$base/users/sign';

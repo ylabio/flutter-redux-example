@@ -59,7 +59,7 @@ class Http {
       if ((token ?? '').isEmpty) {
         return options;
       }
-      options.headers['Authorization'] = 'Bearer $token';
+      options.headers['X-Token'] = token;
       return options;
     });
   }

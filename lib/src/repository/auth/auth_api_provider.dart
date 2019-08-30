@@ -25,7 +25,7 @@ class AuthApiProvider extends BaseApiProvider {
         data: {'login': login, 'password': password},
         queryParameters: {'fields': fields},
       );
-      return AuthResponse.fromJson(response.data['data']);
+      return AuthResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
       if (e.response?.statusCode == 400) {
         return AuthResponse.withError(AuthError.loginFailed);
@@ -39,7 +39,7 @@ class AuthApiProvider extends BaseApiProvider {
       final response = await dio.delete(
         UrlProvider.sign,
       );
-      return AuthResponse.fromJson(response.data['data']);
+      return AuthResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
       return AuthResponse.withError(errorHandler(e));
     }
@@ -51,7 +51,7 @@ class AuthApiProvider extends BaseApiProvider {
         UrlProvider.profile,
         queryParameters: {'fields': fields},
       );
-      return AuthResponse.fromJson(response.data['data']);
+      return AuthResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
       return AuthResponse.withError(errorHandler(e));
     }

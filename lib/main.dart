@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_redux_example/src/repository/auth/auth_api_provider.dart';
 import 'package:flutter_redux_example/src/repository/auth/auth_storage_provider.dart';
 import 'package:flutter_redux_example/src/repository/auth/repository.dart';
+import 'package:flutter_redux_example/src/repository/ticket/ticket_api_provider.dart';
+import 'package:flutter_redux_example/src/repository/ticket/repository.dart';
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/store/app/app_reducer.dart';
 import 'package:flutter_redux_example/src/store/auth/store.dart';
@@ -44,14 +46,20 @@ class App extends StatelessWidget {
       AuthStorageProvider(prefs),
       AuthApiProvider(),
     );
+    final ticketRepository = TicketRepository(
+      TicketApiProvider(),
+    );
 
     // remind user session
     store.dispatch(remind(authRepository));
 
     return StoreProvider<AppState>(
       store: store,
-      child: Provider<AuthRepository>.value(
-        value: authRepository,
+      child: MultiProvider(
+        providers: [
+          Provider<AuthRepository>.value(value: authRepository),
+          Provider<TicketRepository>.value(value: ticketRepository),
+        ],
         child: MaterialApp(
           title: 'Flutter Redux Example',
           theme: ThemeData(),

@@ -46,7 +46,9 @@ class DetailScreen extends StatelessWidget {
             final ticket = viewModel.ticketState.ticket;
             return IconButton(
               icon: Icon(
-                ticket.isBookmark ? Icons.bookmark : Icons.bookmark_border,
+                ticket?.isBookmark ?? false
+                    ? Icons.bookmark
+                    : Icons.bookmark_border,
               ),
               onPressed: viewModel.ticketState.isActionLoading
                   ? null
@@ -67,9 +69,9 @@ class DetailScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Image.network(ticket.imageUrl ?? ''),
-            Text(ticket.title ?? ''),
-            Text(ticket.content ?? ''),
+            Image.network(ticket?.imageUrl ?? ''),
+            Text(ticket?.title ?? ''),
+            Text(ticket?.content ?? ''),
           ],
         ),
       ),

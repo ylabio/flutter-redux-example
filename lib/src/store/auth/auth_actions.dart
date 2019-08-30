@@ -8,6 +8,8 @@ import 'package:flutter_redux_example/src/repository/auth/repository.dart';
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/utils/app_errors.dart';
 
+const USER_FIELDS = '_id,username,email,role,profile(*)';
+
 abstract class AuthAction {
   @override
   String toString() {
@@ -42,7 +44,7 @@ class AuthError extends AuthAction {
 
 class AuthClearError extends AuthAction {}
 
-ThunkAction<AppState> remind(authRepository) {
+ThunkAction<AppState> remind(authRepository, {fields = USER_FIELDS}) {
   return (Store<AppState> store) async {
     store.dispatch(AuthLoading());
 
@@ -61,7 +63,8 @@ ThunkAction<AppState> remind(authRepository) {
   };
 }
 
-ThunkAction<AppState> signin(context, String login, String password) {
+ThunkAction<AppState> signin(context, String login, String password,
+    {fields = USER_FIELDS}) {
   final authRepository = Provider.of<AuthRepository>(context);
   return (Store<AppState> store) async {
     store.dispatch(AuthLoading());
