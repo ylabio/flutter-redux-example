@@ -7,6 +7,8 @@ Reducer<TicketState> ticketStateReducer = combineReducers<TicketState>([
   TypedReducer<TicketState, TicketLoading>(_loading),
   TypedReducer<TicketState, TicketActionLoading>(_actionLoading),
   TypedReducer<TicketState, TicketListLoaded>(_listLoaded),
+  TypedReducer<TicketState, TicketLoaded>(_ticketLoaded),
+  TypedReducer<TicketState, TicketBookmark>(_ticketBookmark),
   TypedReducer<TicketState, TicketError>(_error),
   TypedReducer<TicketState, TicketClearError>(_clearError),
 ]);
@@ -26,6 +28,32 @@ TicketState _listLoaded(TicketState ticketState, TicketListLoaded action) {
         ? action.ticketList
         : [...ticketState.ticketList, ...action.ticketList],
     hasNext: action.ticketList.length == action.limit,
+    isLoading: false,
+    error: null,
+  );
+}
+
+TicketState _ticketLoaded(TicketState ticketState, TicketLoaded action) {
+  return ticketState.copyWith(
+    ticket: action.ticket,
+    isLoading: false,
+    error: null,
+  );
+}
+
+TicketState _ticketBookmark(TicketState ticketState, TicketBookmark action) {
+  final ticketList = ticketState.ticketList.map((item) {
+    if (action.id == item.id) {
+      return item.copyWith(isBookmark: action.isBookmark);
+    }
+    return item;
+  }).toList();
+
+  return ticketState.copyWith(
+    ticketList: ticketList,
+    ticket: action.id == ticketState.ticket.id
+        ? ticketState.ticket.copyWith(isBookmark: action.isBookmark)
+        : ticketState.ticket,
     isLoading: false,
     error: null,
   );
