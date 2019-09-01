@@ -57,6 +57,7 @@ ThunkAction<AppState> remind(authRepository, {fields = USER_FIELDS}) {
         store.dispatch(AuthLoggedIn(token: token, user: authResponse.user));
         return;
       }
+      await authRepository.removeToken();
     }
 
     store.dispatch(AuthLoggedOut());
@@ -77,7 +78,7 @@ ThunkAction<AppState> signin(context, String login, String password,
       return;
     }
 
-    await authRepository.setToken(authResponse.token);
+    // await authRepository.setToken(authResponse.token);
 
     store.dispatch(
         AuthLoggedIn(token: authResponse.token, user: authResponse.user));
