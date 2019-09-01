@@ -23,7 +23,7 @@ class TicketListItem extends StatelessWidget {
       leading: Image.network(item.imageUrl),
       title: Text(item.title),
       trailing: IconButton(
-        icon: Icon(Icons.bookmark),
+        icon: Icon(item.isBookmark ? Icons.bookmark : Icons.bookmark_border),
         onPressed: () {
           listener.bookmark(item);
         },

@@ -65,15 +65,13 @@ class DetailScreen extends StatelessWidget {
   Widget _ticket(DetailScreenTicketViewModel viewModel) {
     final ticket = viewModel.ticketState.ticket;
 
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Image.network(ticket?.imageUrl ?? ''),
-            Text(ticket?.title ?? ''),
-            Text(ticket?.content ?? ''),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Image.network(ticket?.imageUrl ?? ''),
+          Text(ticket?.title ?? ''),
+          Text(ticket?.content ?? ''),
+        ],
       ),
     );
   }

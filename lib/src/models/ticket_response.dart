@@ -8,7 +8,7 @@ class TicketResponse {
   TicketResponse(this.ticket, this.error);
 
   TicketResponse.fromJson(Map<String, dynamic> json)
-      : ticket = Ticket.fromJson(json['ticket']),
+      : ticket = Ticket.fromJson(json),
         error = null;
 
   TicketResponse.withError(this.error) : ticket = null;

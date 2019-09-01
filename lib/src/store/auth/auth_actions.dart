@@ -89,7 +89,7 @@ ThunkAction<AppState> signout(context) {
   return (Store<AppState> store) async {
     store.dispatch(AuthLoading());
 
-    // await authRepository.logout();
+    await authRepository.logout();
     await authRepository.removeToken();
 
     store.dispatch(AuthLoggedOut());

@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 
 import 'package:flutter_redux_example/src/models/auth_response.dart';
+import 'package:flutter_redux_example/src/models/user_response.dart';
 import 'auth_api_provider.dart';
 import 'auth_storage_provider.dart';
 
@@ -25,7 +26,7 @@ class AuthRepository {
     return await _apiProvider.logout();
   }
 
-  Future<AuthResponse> profile({String fields = '_id'}) async {
+  Future<UserResponse> profile({String fields = '_id'}) async {
     return await _apiProvider.profile(fields: fields);
   }
 

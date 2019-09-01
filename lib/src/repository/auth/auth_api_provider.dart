@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 
 import 'package:flutter_redux_example/src/models/auth_response.dart';
+import 'package:flutter_redux_example/src/models/user_response.dart';
 import 'package:flutter_redux_example/src/repository/base_api_provider.dart';
 import 'package:flutter_redux_example/src/repository/url_provider.dart';
 import 'package:flutter_redux_example/src/utils/app_errors.dart';
@@ -36,24 +37,24 @@ class AuthApiProvider extends BaseApiProvider {
 
   Future<AuthResponse> logout() async {
     try {
-      final response = await dio.delete(
+      await dio.delete(
         UrlProvider.sign,
       );
-      return AuthResponse.fromJson(response.data['result']);
+      return AuthResponse(null, null, null);
     } on DioError catch (e) {
       return AuthResponse.withError(errorHandler(e));
     }
   }
 
-  Future<AuthResponse> profile({String fields}) async {
+  Future<UserResponse> profile({String fields}) async {
     try {
       final response = await dio.get(
         UrlProvider.profile,
         queryParameters: {'fields': fields},
       );
-      return AuthResponse.fromJson(response.data['result']);
+      return UserResponse.fromJson(response.data['result']);
     } on DioError catch (e) {
-      return AuthResponse.withError(errorHandler(e));
+      return UserResponse.withError(errorHandler(e));
     }
   }
 }
