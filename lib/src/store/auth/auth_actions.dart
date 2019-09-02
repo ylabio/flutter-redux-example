@@ -50,16 +50,15 @@ ThunkAction<AppState> remind(authRepository, {fields = USER_FIELDS}) {
 
     if (authRepository.hasToken()) {
       final token = authRepository.getToken();
-      store.dispatch(AuthUpdate(token: token, isLoading: true));
       // check if the token is expired
       final authResponse = await authRepository.profile();
       if (authResponse.error == null) {
         store.dispatch(AuthLoggedIn(token: token, user: authResponse.user));
         return;
       }
-      await authRepository.removeToken();
     }
 
+    await authRepository.removeToken();
     store.dispatch(AuthLoggedOut());
   };
 }
@@ -78,7 +77,7 @@ ThunkAction<AppState> signin(context, String login, String password,
       return;
     }
 
-    // await authRepository.setToken(authResponse.token);
+    await authRepository.setToken(authResponse.token);
 
     store.dispatch(
         AuthLoggedIn(token: authResponse.token, user: authResponse.user));

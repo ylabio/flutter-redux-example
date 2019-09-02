@@ -21,7 +21,6 @@ AuthState _update(AuthState authState, AuthUpdate action) {
   return authState.copyWith(
     user: action.user ?? authState.user,
     token: token,
-    hasToken: token.isNotEmpty,
     isLoading: action.isLoading ?? authState.isLoading,
   );
 }

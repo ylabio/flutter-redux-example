@@ -27,9 +27,8 @@ void main() {
     middleware: [thunkMiddleware, LoggingMiddleware.printer()],
   );
 
-  Http()..init(store);
-
   SharedPreferences.getInstance().then((prefs) {
+    Http()..init(store, prefs);
     runApp(App(store: store, prefs: prefs));
   });
 }

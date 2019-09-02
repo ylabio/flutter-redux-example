@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:redux/redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_redux_example/src/utils/app_settings.dart';
+import 'package:flutter_redux_example/src/utils/preferences_key.dart';
 
 class Http {
   Dio dio;
   String token = '';
+  SharedPreferences _prefs;
   final _options = BaseOptions(
     receiveTimeout: AppSettings.receiveTimeout,
     connectTimeout: AppSettings.connectTimeout,
@@ -17,9 +20,11 @@ class Http {
 
   Http._internal();
 
-  void init(Store store) {
-    assert(store != null);
-    token = store.state.authState.token;
+  void init(Store store, SharedPreferences prefs) {
+    assert(store != null && prefs != null);
+
+    _prefs = prefs;
+    token = _prefs.getString(PreferencesKey.authToken) ?? '';
 
     dio = Dio(_options);
     dio.interceptors.add(_authInterceptor());
