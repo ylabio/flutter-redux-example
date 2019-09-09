@@ -7,6 +7,7 @@ import 'package:flutter_redux_example/src/utils/app_errors.dart';
 class TicketState {
   final List<Ticket> ticketList;
   final Ticket ticket;
+  final int totalCount;
   final bool hasNext;
   final bool isLoading;
   final bool isActionLoading;
@@ -15,6 +16,7 @@ class TicketState {
   const TicketState(
       {this.ticketList,
       this.ticket,
+      this.totalCount,
       this.hasNext,
       this.isLoading,
       this.isActionLoading,
@@ -24,6 +26,7 @@ class TicketState {
     return TicketState(
       ticketList: [],
       ticket: null,
+      totalCount: 0,
       hasNext: false,
       isLoading: false,
       isActionLoading: false,
@@ -34,7 +37,7 @@ class TicketState {
   TicketState copyWith({
     List<Ticket> ticketList,
     Ticket ticket,
-    String token,
+    int totalCount,
     bool hasNext,
     bool isLoading,
     bool isActionLoading,
@@ -43,6 +46,7 @@ class TicketState {
     return TicketState(
       ticketList: ticketList ?? this.ticketList,
       ticket: ticket ?? this.ticket,
+      totalCount: totalCount ?? this.totalCount,
       hasNext: hasNext ?? this.hasNext,
       isLoading: isLoading ?? this.isLoading,
       isActionLoading: isActionLoading ?? this.isActionLoading,
@@ -54,6 +58,7 @@ class TicketState {
   int get hashCode =>
       ticketList.hashCode ^
       ticket.hashCode ^
+      totalCount.hashCode ^
       hasNext.hashCode ^
       isLoading.hashCode ^
       isActionLoading.hashCode ^
@@ -66,6 +71,7 @@ class TicketState {
           runtimeType == other.runtimeType &&
           ticketList == other.ticketList &&
           ticket == other.ticket &&
+          totalCount == other.totalCount &&
           hasNext == other.hasNext &&
           isLoading == other.isLoading &&
           isActionLoading == other.isActionLoading &&
@@ -73,7 +79,6 @@ class TicketState {
 
   @override
   String toString() {
-    // ignore: lines_longer_than_80_chars
-    return 'TicketState{ticketList: $ticketList, ticket: $ticket, hasNext: $hasNext, isLoading: $isLoading, isActionLoading: $isActionLoading, error: $error}';
+    return 'TicketState{ticketList: $ticketList, ticket: $ticket, totalCount: $totalCount, hasNext: $hasNext, isLoading: $isLoading, isActionLoading: $isActionLoading, error: $error}';
   }
 }

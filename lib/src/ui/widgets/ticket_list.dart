@@ -5,7 +5,7 @@ import 'package:flutter_redux_example/src/ui/widgets/list_bottom_loader.dart';
 import 'package:flutter_redux_example/src/ui/widgets/ticket_list_item.dart';
 import 'package:flutter_redux_example/src/models/ticket_model.dart';
 
-class TicketList extends StatelessWidget implements TicketAction {
+class TicketList extends StatefulWidget {
   final List<Ticket> items;
   final bool hasNext;
   final bool isLoading;
@@ -15,22 +15,30 @@ class TicketList extends StatelessWidget implements TicketAction {
   final Function onSelect;
   final Function onBookmark;
 
-  final _scrollThreshold = 200.0;
-
   TicketList({
     Key key,
     @required this.items,
     @required this.hasNext,
     @required this.isLoading,
     @required this.isActionLoading,
-    this.onFetch,
+    @required this.onFetch,
     this.onReFetch,
     this.onSelect,
     this.onBookmark,
   }) : super(key: key);
 
   @override
+  _TicketListState createState() => _TicketListState();
+}
+
+class _TicketListState extends State<TicketList> implements TicketAction {
+  final _scrollThreshold = 200.0;
+  bool _isFetching = false;
+
+  @override
   Widget build(BuildContext context) {
+    _isFetching = false;
+
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
         _onScroll(scrollNotification.metrics.maxScrollExtent,
@@ -42,38 +50,41 @@ class TicketList extends StatelessWidget implements TicketAction {
           height: 5,
         ),
         itemBuilder: (BuildContext context, int index) {
-          return index >= items.length
+          return index >= widget.items.length
               ? ListBottomLoader()
               : TicketListItem(
-                  item: items[index],
-                  isActionLoading: isActionLoading,
+                  item: widget.items[index],
+                  isActionLoading: widget.isActionLoading,
                   listener: this,
                 );
         },
-        itemCount: hasNext ? items.length + 1 : items.length,
+        itemCount:
+            widget.hasNext ? widget.items.length + 1 : widget.items.length,
       ),
     );
   }
 
   void _onScroll(double maxScroll, double currentScroll) {
-    if (!isLoading &&
-        hasNext &&
+    if (!_isFetching &&
+        !widget.isLoading &&
+        widget.hasNext &&
         (maxScroll - currentScroll) <= _scrollThreshold) {
-      onFetch();
+      _isFetching = true;
+      widget.onFetch();
     }
   }
 
   @override
   void select(Ticket ticket) {
-    if (onSelect != null) {
-      onSelect(ticket);
+    if (widget.onSelect != null) {
+      widget.onSelect(ticket);
     }
   }
 
   @override
   void bookmark(Ticket ticket) {
-    if (onBookmark != null) {
-      onBookmark(ticket);
+    if (widget.onBookmark != null) {
+      widget.onBookmark(ticket);
     }
   }
 }

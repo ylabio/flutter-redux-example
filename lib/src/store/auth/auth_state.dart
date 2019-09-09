@@ -61,7 +61,6 @@ class AuthState {
 
   @override
   String toString() {
-    // ignore: lines_longer_than_80_chars
     return 'AuthState{user: $user, token: $token, hasToken: $hasToken, isLoading: $isLoading, error: $error}';
   }
 }

@@ -23,7 +23,27 @@ class TicketListItem extends StatelessWidget {
       contentPadding: EdgeInsets.all(15),
       leading: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(4)),
-        child: Image.network(item.imageUrl),
+        child: Container(
+          width: 75,
+          height: double.infinity,
+          child: Image.network(
+            item.imageUrl,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                      : null,
+                ),
+              );
+            },
+          ),
+        ),
       ),
       title:
           Text((item.title ?? '').toUpperCase(), style: Styles.itemListTitle),

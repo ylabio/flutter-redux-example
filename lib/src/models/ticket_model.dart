@@ -37,6 +37,13 @@ class Ticket {
   }
 
   @override
+  bool operator ==(other) =>
+      other is Ticket && id == other.id && isBookmark == other.isBookmark;
+
+  @override
+  int get hashCode => id.hashCode ^ isBookmark.hashCode;
+
+  @override
   String toString() {
     return 'Ticket: {id: $id, title: $title, isBookmark: $isBookmark}';
   }

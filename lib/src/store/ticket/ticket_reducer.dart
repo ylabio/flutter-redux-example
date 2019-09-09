@@ -24,11 +24,16 @@ TicketState _actionLoading(
 }
 
 TicketState _listLoaded(TicketState ticketState, TicketListLoaded action) {
+  final ticketList = action.offset == 0
+      ? action.ticketList
+      : [...ticketState.ticketList, ...action.ticketList];
+  final hasNext = action.ticketList.length == action.limit &&
+      ticketList.length < action.totalCount;
+
   return ticketState.copyWith(
-    ticketList: action.offset == 0
-        ? action.ticketList
-        : [...ticketState.ticketList, ...action.ticketList],
-    hasNext: action.ticketList.length == action.limit,
+    ticketList: ticketList,
+    totalCount: action.totalCount,
+    hasNext: hasNext,
     isLoading: false,
     error: null,
   );

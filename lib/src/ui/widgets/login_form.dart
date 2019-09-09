@@ -12,7 +12,7 @@ class LoginForm extends StatefulWidget {
   LoginForm({Key key, this.viewModel}) : super(key: key);
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {

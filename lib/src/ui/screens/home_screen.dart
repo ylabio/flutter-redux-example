@@ -24,10 +24,10 @@ class HomeScreen extends StatelessWidget {
         converter: (store) =>
             HomeScreenTicketViewModel.fromStore(context, store),
         builder: (context, viewModel) {
-          if (viewModel.ticketState.isLoading) {
+          if (viewModel.ticketState.ticketList.isEmpty &&
+              viewModel.ticketState.isLoading) {
             return PageLoader();
           }
-
           if (viewModel.ticketState.ticketList.isNotEmpty) {
             return _ticketList(context, viewModel);
           }
