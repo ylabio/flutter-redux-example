@@ -37,7 +37,10 @@ class TicketList extends StatelessWidget implements TicketAction {
             scrollNotification.metrics.pixels);
         return true;
       },
-      child: ListView.builder(
+      child: ListView.separated(
+        separatorBuilder: (BuildContext context, int index) => Divider(
+          height: 5,
+        ),
         itemBuilder: (BuildContext context, int index) {
           return index >= items.length
               ? ListBottomLoader()

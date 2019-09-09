@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_example/src/utils/styles.dart';
 import 'package:redux/redux.dart';
 
 import 'package:flutter_redux_example/src/ui/widgets/page_loader.dart';
@@ -66,11 +67,21 @@ class DetailScreen extends StatelessWidget {
     final ticket = viewModel.ticketState.ticket;
 
     return SingleChildScrollView(
+      padding: EdgeInsets.all(15),
       child: Column(
         children: <Widget>[
-          Image.network(ticket?.imageUrl ?? ''),
-          Text(ticket?.title ?? ''),
-          Text(ticket?.content ?? ''),
+          ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            child: Image.network(ticket?.imageUrl ?? ''),
+          ),
+          SizedBox(height: 30),
+          Text(ticket?.title ?? '', style: Styles.title),
+          SizedBox(height: 15),
+          Text(
+            ticket?.content ?? '',
+            style: Styles.content,
+            textAlign: TextAlign.justify,
+          ),
         ],
       ),
     );

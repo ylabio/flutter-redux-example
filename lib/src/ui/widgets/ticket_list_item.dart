@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_redux_example/src/models/ticket_model.dart';
+import 'package:flutter_redux_example/src/utils/styles.dart';
 
 abstract class TicketAction {
   void select(Ticket ticket);
@@ -20,11 +21,18 @@ class TicketListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.all(15),
-      leading: Image.network(item.imageUrl),
-      title: Text(item.title ?? ''),
-      subtitle: Text((item.content ?? '')),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+        child: Image.network(item.imageUrl),
+      ),
+      title:
+          Text((item.title ?? '').toUpperCase(), style: Styles.itemListTitle),
+      subtitle: Text('tap to open...'),
       trailing: IconButton(
-        icon: Icon(item.isBookmark ? Icons.bookmark : Icons.bookmark_border),
+        icon: Icon(
+          item.isBookmark ? Icons.bookmark : Icons.bookmark_border,
+          color: Styles.nightBlack,
+        ),
         onPressed: () {
           listener.bookmark(item);
         },

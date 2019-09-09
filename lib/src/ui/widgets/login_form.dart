@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux_example/src/utils/styles.dart';
 import 'package:redux/redux.dart';
 
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
@@ -76,6 +77,8 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(
               width: double.infinity,
               child: RaisedButton(
+                color: Styles.nightBlack,
+                textColor: Styles.secondaryColor,
                 onPressed: !_authState.isLoading ? _onLoginPressed : null,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
