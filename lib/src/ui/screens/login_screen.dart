@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/ui/widgets/login_form.dart';
+import 'package:flutter_redux_example/src/utils/styles.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -14,8 +15,8 @@ class LoginScreen extends StatelessWidget {
           children: <Widget>[
             SizedBox(height: 75),
             Icon(
-              Icons.lock,
-              color: Colors.blue,
+              Icons.call_to_action,
+              color: Styles.dimGray,
               size: 125,
             ),
             SizedBox(height: 25),

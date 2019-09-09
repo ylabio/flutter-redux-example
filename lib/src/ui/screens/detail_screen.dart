@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_redux_example/src/utils/styles.dart';
 import 'package:redux/redux.dart';
 
+import 'package:flutter_redux_example/src/ui/widgets/bookmark_button.dart';
 import 'package:flutter_redux_example/src/ui/widgets/page_loader.dart';
 import 'package:flutter_redux_example/src/models/ticket_model.dart';
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
 import 'package:flutter_redux_example/src/store/ticket/store.dart';
+import 'package:flutter_redux_example/src/utils/styles.dart';
 
 class DetailScreen extends StatelessWidget {
   @override
@@ -45,17 +46,13 @@ class DetailScreen extends StatelessWidget {
               DetailScreenTicketViewModel.fromStore(context, store),
           builder: (context, viewModel) {
             final ticket = viewModel.ticketState.ticket;
-            return IconButton(
-              icon: Icon(
-                ticket?.isBookmark ?? false
-                    ? Icons.bookmark
-                    : Icons.bookmark_border,
-              ),
-              onPressed: viewModel.ticketState.isActionLoading
-                  ? null
-                  : () {
-                      viewModel.bookmark(ticket.id, !ticket.isBookmark);
-                    },
+            final isActionLoading = viewModel.ticketState.isActionLoading;
+
+            return BookmarkButton(
+              isBookmark: ticket?.isBookmark ?? false,
+              isLoading: isActionLoading,
+              color: Styles.secondaryColor,
+              onPress: () => viewModel.bookmark(ticket.id, !ticket.isBookmark),
             );
           },
         ),

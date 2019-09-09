@@ -37,7 +37,7 @@ class _LoginFormState extends State<LoginForm> {
         padding: const EdgeInsets.only(left: 45, right: 45),
         child: Column(
           children: [
-            Text('Sign in'),
+            Text('Sign in', style: Styles.loginTitle),
             SizedBox(height: 20),
             TextFormField(
               controller: _usernameController,

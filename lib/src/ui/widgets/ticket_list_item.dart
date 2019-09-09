@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:flutter_redux_example/src/models/ticket_model.dart';
+import 'package:flutter_redux_example/src/ui/widgets/bookmark_button.dart';
 import 'package:flutter_redux_example/src/utils/styles.dart';
 
 abstract class TicketAction {
@@ -11,10 +12,16 @@ abstract class TicketAction {
 
 class TicketListItem extends StatelessWidget {
   final Ticket item;
+  final String actionTicketId;
   final bool isActionLoading;
   final TicketAction listener;
 
-  TicketListItem({Key key, this.item, this.isActionLoading, this.listener})
+  TicketListItem(
+      {Key key,
+      this.item,
+      this.actionTicketId,
+      this.isActionLoading,
+      this.listener})
       : super(key: key);
 
   @override
@@ -48,14 +55,11 @@ class TicketListItem extends StatelessWidget {
       title:
           Text((item.title ?? '').toUpperCase(), style: Styles.itemListTitle),
       subtitle: Text('tap to open...'),
-      trailing: IconButton(
-        icon: Icon(
-          item.isBookmark ? Icons.bookmark : Icons.bookmark_border,
-          color: Styles.nightBlack,
-        ),
-        onPressed: () {
-          listener.bookmark(item);
-        },
+      trailing: BookmarkButton(
+        isBookmark: item.isBookmark,
+        isLoading: isActionLoading && actionTicketId == item.id,
+        color: Styles.nightBlack,
+        onPress: () => listener.bookmark(item),
       ),
       onTap: isActionLoading
           ? null

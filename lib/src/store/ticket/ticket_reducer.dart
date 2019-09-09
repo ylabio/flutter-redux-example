@@ -20,7 +20,8 @@ TicketState _loading(TicketState ticketState, TicketLoading action) {
 
 TicketState _actionLoading(
     TicketState ticketState, TicketActionLoading action) {
-  return ticketState.copyWith(isActionLoading: true, error: null);
+  return ticketState.copyWith(
+      actionTicketId: action.id, isActionLoading: true, error: null);
 }
 
 TicketState _listLoaded(TicketState ticketState, TicketListLoaded action) {
@@ -57,10 +58,11 @@ TicketState _ticketBookmark(TicketState ticketState, TicketBookmark action) {
 
   return ticketState.copyWith(
     ticketList: ticketList,
-    ticket: action.id == ticketState.ticket.id
+    ticket: action.id == ticketState.ticket?.id
         ? ticketState.ticket.copyWith(isBookmark: action.isBookmark)
         : ticketState.ticket,
     isLoading: false,
+    isActionLoading: false,
     error: null,
   );
 }

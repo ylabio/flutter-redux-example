@@ -63,6 +63,7 @@ class HomeScreen extends StatelessWidget {
       items: viewModel.ticketState.ticketList,
       hasNext: viewModel.ticketState.hasNext,
       isLoading: viewModel.ticketState.isLoading,
+      actionTicketId: viewModel.ticketState.actionTicketId,
       isActionLoading: viewModel.ticketState.isActionLoading,
       onFetch: () => viewModel.fetchList(),
       onReFetch: () => viewModel.refetchList(),

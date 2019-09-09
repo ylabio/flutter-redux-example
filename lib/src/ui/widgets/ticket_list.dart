@@ -9,6 +9,7 @@ class TicketList extends StatefulWidget {
   final List<Ticket> items;
   final bool hasNext;
   final bool isLoading;
+  final String actionTicketId;
   final bool isActionLoading;
   final Function onFetch;
   final Function onReFetch;
@@ -20,6 +21,7 @@ class TicketList extends StatefulWidget {
     @required this.items,
     @required this.hasNext,
     @required this.isLoading,
+    @required this.actionTicketId,
     @required this.isActionLoading,
     @required this.onFetch,
     this.onReFetch,
@@ -54,6 +56,7 @@ class _TicketListState extends State<TicketList> implements TicketAction {
               ? ListBottomLoader()
               : TicketListItem(
                   item: widget.items[index],
+                  actionTicketId: widget.actionTicketId,
                   isActionLoading: widget.isActionLoading,
                   listener: this,
                 );
