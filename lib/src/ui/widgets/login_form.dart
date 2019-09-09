@@ -57,6 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(height: 15),
             TextFormField(
               controller: _passwordController,
+              obscureText: true,
               keyboardType: TextInputType.text,
               textAlign: TextAlign.center,
               textInputAction: TextInputAction.done,

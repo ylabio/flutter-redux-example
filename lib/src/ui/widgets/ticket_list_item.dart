@@ -21,7 +21,8 @@ class TicketListItem extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.all(15),
       leading: Image.network(item.imageUrl),
-      title: Text(item.title),
+      title: Text(item.title ?? ''),
+      subtitle: Text((item.content ?? '')),
       trailing: IconButton(
         icon: Icon(item.isBookmark ? Icons.bookmark : Icons.bookmark_border),
         onPressed: () {

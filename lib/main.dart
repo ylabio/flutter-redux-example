@@ -28,29 +28,31 @@ void main() {
   );
 
   SharedPreferences.getInstance().then((prefs) {
+    // init dio params and headers
     Http()..init(store, prefs);
-    runApp(App(store: store, prefs: prefs));
+    // init auth repository
+    final authRepository = AuthRepository(
+      AuthStorageProvider(prefs),
+      AuthApiProvider(),
+    );
+    // remind user session
+    store.dispatch(remind(authRepository));
+
+    runApp(App(store: store, authRepository: authRepository));
   });
 }
 
 class App extends StatelessWidget {
   final Store store;
-  final SharedPreferences prefs;
+  final AuthRepository authRepository;
 
-  const App({Key key, this.store, this.prefs}) : super(key: key);
+  const App({Key key, this.store, this.authRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final authRepository = AuthRepository(
-      AuthStorageProvider(prefs),
-      AuthApiProvider(),
-    );
     final ticketRepository = TicketRepository(
       TicketApiProvider(),
     );
-
-    // remind user session
-    store.dispatch(remind(authRepository));
 
     return StoreProvider<AppState>(
       store: store,
