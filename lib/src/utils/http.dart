@@ -25,7 +25,6 @@ class Http {
 
     _prefs = prefs;
     token = _prefs.getString(PreferencesKey.authToken) ?? '';
-    print('TOKEN: $token');
 
     dio = Dio(_options);
     dio.interceptors.add(_authInterceptor());
