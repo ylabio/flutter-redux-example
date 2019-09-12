@@ -92,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             SizedBox(height: 15),
             Text(
-              _authState.error != null ? _authState.error.description : '',
+              _authState.error?.description ?? '',
               style: TextStyle(color: Colors.red),
             ),
             Container(
