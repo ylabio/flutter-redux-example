@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux_example/src/ui/widgets/list_bottom_loader.dart';
 import 'package:flutter_redux_example/src/ui/widgets/ticket_list_item.dart';
 import 'package:flutter_redux_example/src/models/ticket_model.dart';
+import 'package:flutter_redux_example/src/utils/app_settings.dart';
 
 class TicketList extends StatefulWidget {
   final List<Ticket> items;
@@ -77,6 +78,34 @@ class _TicketListState extends State<TicketList> implements TicketAction {
     }
   }
 
+  SnackBar _bookmarkSnackBar(Ticket ticket) {
+    if (ticket.isBookmark) {
+      return _snackBar(
+        title: 'Ticket removed from favorites',
+        actionTitle: 'Cancel',
+        onPressed: () => bookmark(ticket.copyWith(isBookmark: false)),
+      );
+    }
+
+    return _snackBar(
+      title: 'Ticket added to favorites',
+    );
+  }
+
+  SnackBar _snackBar(
+      {@required String title, String actionTitle, void Function() onPressed}) {
+    return SnackBar(
+      duration: AppSettings.snackBarDisplayDuration,
+      content: Text(title),
+      action: onPressed != null
+          ? SnackBarAction(
+              label: actionTitle,
+              onPressed: onPressed,
+            )
+          : null,
+    );
+  }
+
   @override
   void select(Ticket ticket) {
     if (widget.onSelect != null) {
@@ -87,7 +116,7 @@ class _TicketListState extends State<TicketList> implements TicketAction {
   @override
   void bookmark(Ticket ticket) {
     if (widget.onBookmark != null) {
-      widget.onBookmark(ticket);
+      widget.onBookmark(ticket, snackBar: _bookmarkSnackBar(ticket));
     }
   }
 }

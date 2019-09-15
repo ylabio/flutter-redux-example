@@ -5,19 +5,19 @@ import 'package:flutter_redux_example/src/utils/app_errors.dart';
 
 @immutable
 class SnackbarState {
+  final BuildContext context;
   final SnackBar snackBar;
-  final Function action;
   final Function callback;
   final bool show;
   final AppBaseError error;
 
   const SnackbarState(
-      {this.snackBar, this.action, this.callback, this.show, this.error});
+      {this.context, this.snackBar, this.callback, this.show, this.error});
 
   factory SnackbarState.initial() {
     return SnackbarState(
+      context: null,
       snackBar: null,
-      action: null,
       callback: null,
       show: false,
       error: null,
@@ -25,6 +25,7 @@ class SnackbarState {
   }
 
   SnackbarState copyWith({
+    BuildContext context,
     SnackBar snackBar,
     Function action,
     Function callback,
@@ -32,8 +33,8 @@ class SnackbarState {
     AppBaseError error,
   }) {
     return SnackbarState(
+      context: context ?? this.context,
       snackBar: snackBar ?? this.snackBar,
-      action: action ?? this.action,
       callback: callback ?? this.callback,
       show: show ?? this.show,
       error: error,
@@ -42,8 +43,8 @@ class SnackbarState {
 
   @override
   int get hashCode =>
+      context.hashCode ^
       snackBar.hashCode ^
-      action.hashCode ^
       callback.hashCode ^
       show.hashCode ^
       error.hashCode;
@@ -53,14 +54,14 @@ class SnackbarState {
       identical(this, other) ||
       other is SnackbarState &&
           runtimeType == other.runtimeType &&
+          context == other.context &&
           snackBar == other.snackBar &&
-          action == other.action &&
           callback == other.callback &&
           show == other.show &&
           error == other.error;
 
   @override
   String toString() {
-    return 'SnackbarState{snackBar: $snackBar, action: $action, callback: $callback, show: $show, error: $error}';
+    return 'SnackbarState{snackBar: $snackBar, callback: $callback, show: $show, error: $error}';
   }
 }

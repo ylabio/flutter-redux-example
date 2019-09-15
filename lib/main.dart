@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:provider/provider.dart';
@@ -42,11 +43,55 @@ void main() {
   });
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   final Store store;
   final AuthRepository authRepository;
 
   const App({Key key, this.store, this.authRepository}) : super(key: key);
+
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  StreamSubscription storeSubscription;
+  bool snackbarShow = false;
+
+  @override
+  void initState() {
+    super.initState();
+    storeSubscription = widget.store.onChange.listen((state) {
+      // Listening snackbar state to show/hide a SnackBar
+      final snackbarState = state.snackbarState;
+      if (!snackbarState.show &&
+          snackbarShow &&
+          snackbarState.context != null) {
+        // HIDE SNACKBAR
+        snackbarShow = false;
+        Scaffold.of(snackbarState.context).hideCurrentSnackBar();
+      } else if (snackbarState.show &&
+          !snackbarShow &&
+          snackbarState.context != null) {
+        // SHOW SNACKBAR
+        snackbarShow = true;
+        Scaffold.of(snackbarState.context)
+            .showSnackBar(snackbarState.snackBar)
+            .closed
+            .then((SnackBarClosedReason reason) {
+          if (reason != SnackBarClosedReason.action &&
+              snackbarState.callback != null) {
+            snackbarState.callback();
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    storeSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +100,10 @@ class App extends StatelessWidget {
     );
 
     return StoreProvider<AppState>(
-      store: store,
+      store: widget.store,
       child: MultiProvider(
         providers: [
-          Provider<AuthRepository>.value(value: authRepository),
+          Provider<AuthRepository>.value(value: widget.authRepository),
           Provider<TicketRepository>.value(value: ticketRepository),
         ],
         child: MaterialApp(

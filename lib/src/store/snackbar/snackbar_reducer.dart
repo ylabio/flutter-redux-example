@@ -12,8 +12,8 @@ Reducer<SnackbarState> snackbarStateReducer = combineReducers<SnackbarState>([
 
 SnackbarState _show(SnackbarState snackbarState, SnackbarShow action) {
   return snackbarState.copyWith(
+    context: action.context,
     snackBar: action.snackBar,
-    action: action.action,
     callback: action.callback,
     show: true,
     error: null,
@@ -21,7 +21,7 @@ SnackbarState _show(SnackbarState snackbarState, SnackbarShow action) {
 }
 
 SnackbarState _hide(SnackbarState snackbarState, SnackbarHide action) {
-  return snackbarState.copyWith(show: false, error: null);
+  return snackbarState.copyWith(context: null, show: false, error: null);
 }
 
 SnackbarState _error(SnackbarState snackbarState, SnackbarError action) {

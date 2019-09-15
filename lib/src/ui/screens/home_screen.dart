@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_example/src/store/snackbar/store.dart';
 import 'package:redux/redux.dart';
 
 import 'package:flutter_redux_example/src/ui/widgets/page_loader.dart';
@@ -68,13 +69,15 @@ class HomeScreen extends StatelessWidget {
       onFetch: () => viewModel.fetchList(),
       onReFetch: () => viewModel.refetchList(),
       onSelect: (Ticket ticket) {
+        viewModel.hideSnackBar();
         Navigator.of(context).pushNamed(
           AppRouter.detailRoute,
           arguments: ticket,
         );
       },
-      onBookmark: (Ticket ticket) {
-        viewModel.bookmark(ticket.id, !ticket.isBookmark);
+      onBookmark: (Ticket ticket, {SnackBar snackBar}) {
+        viewModel.bookmark(ticket.id, !ticket.isBookmark,
+            context: context, snackBar: snackBar);
       },
     );
   }
@@ -109,12 +112,14 @@ class HomeScreenTicketViewModel {
   final Function fetchList;
   final Function refetchList;
   final Function bookmark;
+  final Function hideSnackBar;
 
   HomeScreenTicketViewModel({
     this.ticketState,
     this.fetchList,
     this.refetchList,
     this.bookmark,
+    this.hideSnackBar,
   });
 
   static HomeScreenTicketViewModel fromStore(context, Store<AppState> store) {
@@ -122,8 +127,13 @@ class HomeScreenTicketViewModel {
       ticketState: store.state.ticketState,
       fetchList: () => store.dispatch(fetchTicketList(context)),
       refetchList: () => store.dispatch(refetchTicketList(context)),
-      bookmark: (id, isBookmark) => store
-          .dispatch(bookmarkTicket(context, id: id, isBookmark: isBookmark)),
+      bookmark: (id, isBookmark, {BuildContext context, SnackBar snackBar}) =>
+          store.dispatch(bookmarkTicket(context,
+              id: id,
+              isBookmark: isBookmark,
+              snackBarContext: context,
+              snackBar: snackBar)),
+      hideSnackBar: () => store.dispatch(SnackbarHide()),
     );
   }
 }
