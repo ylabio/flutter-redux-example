@@ -2,10 +2,12 @@ import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_redux_example/src/models/ticket_model.dart';
 import 'package:flutter_redux_example/src/repository/ticket/repository.dart';
 import 'package:flutter_redux_example/src/store/app/app_state.dart';
+import 'package:flutter_redux_example/src/store/snackbar/store.dart';
 import 'package:flutter_redux_example/src/utils/app_errors.dart';
 
 const TICKET_LIST_FIELDS = 'items(_id,title,image(url),isBookmark),count';
@@ -111,15 +113,30 @@ ThunkAction<AppState> fetchTicket(context,
 }
 
 ThunkAction<AppState> bookmarkTicket(context,
-    {@required String id, @required bool isBookmark}) {
+    {@required String id,
+    @required bool isBookmark,
+    BuildContext snackBarContext,
+    SnackBar snackBar}) {
   final ticketRepository = Provider.of<TicketRepository>(context);
   return (Store<AppState> store) async {
     store.dispatch(TicketActionLoading(id: id));
 
+    var result;
     if (isBookmark) {
-      await ticketRepository.bookmark(id: id);
+      result = await ticketRepository.bookmark(id: id);
     } else {
-      await ticketRepository.removeBookmark(id: id);
+      result = await ticketRepository.removeBookmark(id: id);
+    }
+
+    if (result.error != null) {
+      store.dispatch(TicketError(
+        error: result.error,
+      ));
+      return;
+    }
+
+    if (snackBar != null) {
+      store.dispatch(show(snackBarContext, snackBar));
     }
 
     store.dispatch(TicketBookmark(

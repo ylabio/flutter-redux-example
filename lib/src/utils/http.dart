@@ -31,7 +31,7 @@ class Http {
     dio.interceptors.add(logger);
 
     store.onChange.listen((state) {
-      final nextToken = store.state.authState.token;
+      final nextToken = state.authState.token;
       if (nextToken != token) {
         if (nextToken == null) {
           token = '';
